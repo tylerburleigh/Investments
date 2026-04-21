@@ -247,10 +247,14 @@ Skip the decision file (log-only) when:
 Raw findings flow from scans through reviews into permanent thesis docs.
 
 **Weekly (capture + light touch):**
-- `/weekly-scan` writes `scans/YYYY-MM-DD.md` with findings per thesis (hypothesis triggers, directional signals, potential backlog resolutions)
+- `/weekly-scan` is the default weekly capture. It writes `scans/YYYY-MM-DD.md` with findings per thesis (hypothesis triggers, directional signals, potential backlog resolutions)
 - **Hypothesis triggers** (conclusive evidence): immediately update thesis doc — Status + Evaluated in Hypotheses table, dated entry in `## Updates`. The thesis doc is the permanent record.
 - **Directional signals**: stay in scan file. No promotion yet. They accumulate for monthly review.
+- Every signal includes a source tier (`filing`, `primary/company`, `trade/wire`, `data provider`, `commentary`) and a newness label (`New this week` or `Carried from prior log/review`).
+- Add upcoming thesis catalysts surfaced during scanning to `docs/calendar.md`.
+- For IPO candidates, use [[docs/ipo-watchlist]] as the relevance filter: only create watchlist notes and calendar events for names tied to an active thesis/theme or plausible portfolio action.
 - **Weekly review** wikilinks the scan file (`[[scans/YYYY-MM-DD]]`), does not duplicate findings.
+- If a weekly review already exists from the past 7 days and there is no new portfolio snapshot, hypothesis trigger, decision/action, or material thesis-health change, write the scan only and summarize it. Do not create a duplicate weekly review note just to acknowledge a scan.
 
 **Monthly (synthesis):**
 - Read all scans from prior month
@@ -339,6 +343,8 @@ The skill reads all active thesis/theme docs, runs targeted Tavily searches per 
 
 The skill runs lint, optionally pulls SnapTrade data, walks through a period-specific checklist (deeper for monthly/quarterly than weekly), writes the review note, and logs it. See `.claude/skills/review/SKILL.md` for the full workflow.
 
+For weekly "review and/or scan" requests, scan first. If a weekly review already exists from the past 7 days, create another review note only when new portfolio data, a hypothesis trigger, a decision/action, or a material thesis-health change warrants it.
+
 **`/research`** — resolve a research backlog item. Invoke when:
 - The user says "research B001", "resolve item B005", "look into [claim]"
 - The user says "work through the backlog" (pick the highest-priority overdue item)
@@ -413,6 +419,12 @@ All information presented to the user must have explicit source attribution. Dur
 
 ### 2026-04-20 — Weekly scan should always be part of weekly review
 The `/weekly-scan` skill should be run as a standard step in every weekly review, not skipped. Add to the weekly review checklist.
+
+### 2026-04-21 — Scan first; don't duplicate weekly reviews
+When a weekly review already exists from the past 7 days, a fresh scan can stand alone. Create another weekly review note only if there is new portfolio data, a hypothesis trigger, a decision/action, a material thesis-health change, or an explicit user request for another review note.
+
+### 2026-04-21 — Weekly scan findings need source tier and newness labels
+Each scan finding should say whether it is `New this week` or `Carried from prior log/review`, and identify the source tier (`filing`, `primary/company`, `trade/wire`, `data provider`, `commentary`).
 
 ### 2026-04-20 — Use `scripts/lib/snaptrade.py` for MCP data, don't hand-parse
 SnapTrade MCP results have a nested `symbol.symbol.symbol` structure and `currency.code` dicts. The `parse_positions()` function in `scripts/lib/snaptrade.py` handles this. For diffing: `portfolio_diff.py` does value-level (>5% threshold); for unit-level DCA verification, iterate `Position.units` directly.

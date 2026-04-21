@@ -1,6 +1,6 @@
 ---
 date: 2026-04-19
-last_updated: 2026-04-19
+last_updated: 2026-04-21
 type: reference
 status: active
 tags: [research, methodology, sources]
@@ -17,7 +17,9 @@ Reference doc covering when to research, how to research, and which sources to t
 ### Weekly (~15–30 min)
 - Scan news for thesis-relevant events (Tavily search by thesis tag)
 - Check hypothesis tables in thesis docs for triggered conditions
-- If something significant occurred: append to `decisions/log.md` as a `signal` entry and note in the relevant thesis doc's Updates section
+- Write significant findings to `scans/YYYY-MM-DD.md`; do not append signals to `decisions/log.md`
+- Add upcoming earnings, launches, regulatory deadlines, or other thesis catalysts to `docs/calendar.md`
+- Check [[docs/ipo-watchlist]] for thesis-relevant IPO filing, pricing, first earnings, or lockup events; ignore general IPO noise
 - No deep dives required unless a hypothesis is triggered or a major position moves >10%
 
 ### Monthly (~2–4 hrs, aligned with monthly review)
@@ -43,6 +45,7 @@ Reference doc covering when to research, how to research, and which sources to t
 | Deep web research | Sourcing specific claims, finding analyst reports | Tavily `tavily_research` |
 | Earnings transcripts | Position-specific thesis checks, management tone | SEC EDGAR (full text), Motley Fool, Seeking Alpha |
 | SEC filings | Factual company data (revenue, debt, risk factors) | SEC EDGAR `edgar.sec.gov` |
+| IPO filings / calendars | Thesis-relevant IPO candidates, S-1s, pricing, lockups | SEC EDGAR, Renaissance Capital, Nasdaq IPO Calendar, company IR, Reuters/Bloomberg |
 | Macro data | Rate environment, GDP, inflation, employment | FRED `fred.stlouisfed.org` |
 | On-chain data | Crypto flows, exchange balances, miner activity | Glassnode, CoinGecko |
 | Fed policy signals | Rate path, balance sheet, FOMC minutes | `federalreserve.gov` |
@@ -118,6 +121,20 @@ Reference doc covering when to research, how to research, and which sources to t
 - **Date every market-size figure.** Markets move; a 2022 estimate isn't a 2026 estimate.
 - **Cite methodology caveats.** "24% CAGR" means nothing without knowing whether it's base/bull/bear case and what's included in the market definition.
 - **When in doubt, use `[!unverified]`.** It's better to flag uncertainty than to let a guess harden into assumed fact.
+
+### Weekly Scan Source Tiers
+
+Use these labels in `scans/YYYY-MM-DD.md`:
+
+| Tier | Use For | Notes |
+|------|---------|-------|
+| filing | SEC/SEDAR filings, regulatory filings, official government releases | Highest trust for factual company/regulatory events |
+| primary/company | Company investor releases, earnings materials, official mission/product updates | High trust, but still promotional |
+| trade/wire | Reuters, Bloomberg, industry trade publications | Good for corroboration and industry context |
+| data provider | Farside, CoinGecko, Sprott, EIA, FRED, etc. | Cite date and methodology caveat where relevant |
+| commentary | Analyst blogs, Motley Fool, SimplyWallSt, crypto-native media | Use only when underlying data is verifiable |
+
+Each weekly scan signal should also be labeled `New this week` or `Carried from prior log/review` to avoid double-counting old evidence during monthly synthesis.
 - **Analyst price targets.** Ignore the target; understand the model and assumptions if available.
 
 ---

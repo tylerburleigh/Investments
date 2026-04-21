@@ -1,6 +1,6 @@
 ---
 date: 2026-04-19
-last_updated: 2026-04-19
+last_updated: 2026-04-21
 type: reference
 status: active
 tags: [log, sessions, continuity]
@@ -20,6 +20,16 @@ Append-only. One entry per session. Newest on top. The agent reads this at sessi
 ```
 
 ---
+
+### [2026-04-21] session | IPO watchlist process
+- Worked on: created [[docs/ipo-watchlist]] as the relevance filter and workflow for IPO candidates, added watchlist notes for [[watchlist/SPACEX]], [[watchlist/XE]], and [[watchlist/ELMT]], wired IPO checks into [[docs/calendar]], and added IPO checks to [[docs/research-methodology]] plus the weekly scan guidance in [[CLAUDE]].
+- Deferred: OpenAI and Anthropic remain pipeline-only until a public S-1 or credible filing window appears. Yesway and National Healthcare Properties were intentionally excluded because they do not map cleanly to current theses.
+- Notes: `python3 scripts/lint.py --write-index` finished clean on 2026-04-21 with 0 errors / 0 warnings across 65 files. Next IPO checks are XE/ELMT on Apr 28 and SpaceX/xAI public S-1 status on May 15.
+
+### [2026-04-21] session | first formal weekly scan and review refresh
+- Worked on: ran briefing and lint, created [[scans/2026-04-21]] across all active thesis/theme docs, wrote a light weekly review refresh at [[reviews/2026-04-21-weekly]], then tightened the scan/review process docs and template.
+- Deferred: no live SnapTrade refresh was pulled; next useful checks are ISRG Q1, AMKR Q1, NVTS Q1, and SYM Q2 earnings.
+- Notes: no hypothesis triggers. Directional signals were AI/TSMC positive, BTC ETF flows positive, ASTS BlueBird 7 negative but not a formal H3 disconfirmation, uranium still above threshold, and IonQ interconnect positive. Future weekly runs should scan first and avoid duplicate review notes unless new portfolio data, a trigger, or a decision/action warrants one.
 
 ### [2026-04-20] session | first weekly review
 - Worked on: pulled live SnapTrade data, created snapshot for Apr 20 ($454,716, 44 positions), ran first weekly review, wrote review note, logged snapshot and review in decisions/log.md

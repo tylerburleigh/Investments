@@ -32,6 +32,7 @@ MONTH_MAP = {
 
 FENCED_CODE_RE = re.compile(r"```.*?```", re.DOTALL)
 WIKILINK_HOLDING_RE = re.compile(r"\[\[holdings/([^\]|/]+)")
+WIKILINK_RE = re.compile(r"\[\[([^\]]+)\]\]")
 
 
 # ---------- helpers ----------
@@ -83,6 +84,27 @@ def _section_body(body: str, heading: str) -> str:
         if in_section:
             out.append(line)
     return "\n".join(out)
+
+
+def _split_table_row(line: str) -> list[str]:
+    """Split a markdown table row while preserving escaped pipes in wikilinks."""
+    placeholder = "__ESCAPED_PIPE__"
+    cleaned = line.strip().replace(r"\|", placeholder)
+    if not cleaned.startswith("|") or not cleaned.endswith("|"):
+        return []
+    return [c.strip().replace(placeholder, "|") for c in cleaned.split("|")[1:-1]]
+
+
+def _display_wikilinks(text: str) -> str:
+    """Convert Obsidian wikilinks to their display label for terminal output."""
+    def repl(match: re.Match) -> str:
+        raw = match.group(1).replace(r"\|", "|")
+        if "|" in raw:
+            return raw.rsplit("|", 1)[1]
+        target = raw.split("#", 1)[0]
+        return target.rsplit("/", 1)[-1]
+
+    return WIKILINK_RE.sub(repl, text)
 
 
 def parse_timeframe(s: str) -> date | None:
@@ -384,7 +406,7 @@ def check_session_log(today: date) -> list[Item]:
     for m in re.finditer(r"### \[(\d{4}-\d{2}-\d{2})\] session", body):
         d = _parse_date(m.group(1))
         if d:
-            last_date = d
+            last_date = d if last_date is None else max(last_date, d)
     if last_date:
         days = (today - last_date).days
         items.append(Item("info", "session", f"Last session: {last_date} ({days}d ago)"))
@@ -402,15 +424,16 @@ def check_calendar(today: date) -> list[Item]:
     upcoming = []
     for line in body.splitlines():
         line = line.strip()
-        m = re.match(r"\|\s*(\d{4}-\d{2}-\d{2})\s*\|.*- \[ \].*\|", line)
-        if not m:
+        cells = _split_table_row(line)
+        if len(cells) < 5 or "- [ ]" not in cells[4]:
             continue
-        event_date = _parse_date(m.group(1))
+        event_date = _parse_date(cells[0])
         if event_date is None:
             continue
         delta = (event_date - today).days
         if 0 <= delta <= 30:
-            desc = re.sub(r"\|", "—", line).strip("| ")[:55]
+            thesis = _display_wikilinks(cells[2])
+            desc = f"{cells[0]} — {cells[1]} — {thesis}"[:80]
             upcoming.append((delta, desc))
     if upcoming:
         for delta, desc in sorted(upcoming):

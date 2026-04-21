@@ -12,6 +12,7 @@ Checks:
   - Research backlog overdue items
   - Source callout quality (citation present, date/year attached)
   - Untyped market-size figures in strategy doc prose
+  - Parser contracts for documented note types, content folders, templates, and automation tables
 
 Usage:
     python3 scripts/lint.py                 # full report
@@ -24,6 +25,7 @@ Exit codes: 0 = no errors, 1 = errors found, 2 = script failure.
 from __future__ import annotations
 
 import argparse
+import subprocess
 import re
 import sys
 from dataclasses import dataclass, field
@@ -39,7 +41,7 @@ VAULT_ROOT = Path(__file__).resolve().parent.parent
 
 ALLOWED_TYPES = {
     "holding", "decision", "snapshot", "review", "watchlist",
-    "strategy", "reference",
+    "strategy", "reference", "scan",
 }
 
 ALLOWED_STATUS_BY_TYPE = {
@@ -50,6 +52,7 @@ ALLOWED_STATUS_BY_TYPE = {
     "review": {"active", "closed"},
     "snapshot": {"active", "closed"},
     "reference": {"active", "closed"},
+    "scan": {"active", "closed"},
 }
 
 REQUIRED_FIELDS = {
@@ -60,6 +63,7 @@ REQUIRED_FIELDS = {
     "watchlist": {"date", "type", "ticker", "status"},
     "strategy":  {"date", "type", "last_updated", "status"},
     "reference": {"date", "type"},
+    "scan":      {"date", "type", "status", "theses_scanned", "signals_found"},
 }
 
 STALENESS_DAYS = {
@@ -69,7 +73,7 @@ STALENESS_DAYS = {
 }
 
 CONTENT_FOLDERS = ["holdings", "decisions", "portfolio", "reviews",
-                   "strategy", "watchlist", "docs"]
+                   "strategy", "watchlist", "docs", "scans"]
 
 WIKILINK_RE = re.compile(r"\[\[([^\]|]+)(?:\|[^\]]+)?\]\]")
 FENCED_CODE_RE = re.compile(r"```.*?```", re.DOTALL)
@@ -231,6 +235,31 @@ def _strip_code(body: str) -> str:
     body = FENCED_CODE_RE.sub("", body)
     body = INLINE_CODE_RE.sub("", body)
     return body
+
+
+def _split_table_row(line: str) -> list[str]:
+    """Split a markdown table row while preserving escaped pipes in wikilinks."""
+    s = line.strip()
+    if not s.startswith("|") or not s.endswith("|"):
+        return []
+    placeholder = "__ESCAPED_PIPE__"
+    s = s.replace(r"\|", placeholder)
+    return [c.strip().replace(placeholder, "|") for c in s.split("|")[1:-1]]
+
+
+def _is_separator_row(cells: list[str]) -> bool:
+    return bool(cells) and all(set(c.replace(" ", "")) <= {"-", ":"} for c in cells)
+
+
+def _display_wikilinks(text: str) -> str:
+    """Convert Obsidian wikilinks to display text for parser smoke checks."""
+    def repl(match: re.Match) -> str:
+        raw = match.group(1).replace(r"\|", "|")
+        if "|" in raw:
+            return raw.rsplit("|", 1)[1]
+        return raw.split("#", 1)[0].rsplit("/", 1)[-1]
+
+    return WIKILINK_RE.sub(repl, text)
 
 
 def _section_body(body: str, heading: str) -> str:
@@ -425,7 +454,7 @@ def _parse_hypothesis_table(body: str) -> list[dict]:
             continue
         if not in_section or not s.startswith("|"):
             continue
-        cells = [c.strip() for c in s.split("|")[1:-1]]
+        cells = _split_table_row(s)
         if len(cells) < 8:
             continue
         num = cells[0]
@@ -536,7 +565,7 @@ def check_research_backlog(notes: list[Note], today: date) -> list[Issue]:
         line = line.strip()
         if not line.startswith("|") or not line.endswith("|"):
             continue
-        parts = [p.strip() for p in line.split("|")[1:-1]]
+        parts = _split_table_row(line)
         if len(parts) < 7:
             continue
         num = parts[0]
@@ -622,7 +651,7 @@ def check_cross_thesis_conviction(notes: list[Note]) -> list[Issue]:
             if row_end == -1:
                 row_end = len(scan)
             row = scan[row_start:row_end]
-            cells = [c.strip() for c in row.split("|")]
+            cells = _split_table_row(row)
             # Conviction is typically the last numeric cell in position tables
             conv = None
             for cell in reversed(cells):
@@ -659,14 +688,168 @@ def check_event_calendar(notes: list[Note], today: date) -> list[Issue]:
     for line in scan.splitlines():
         line = line.strip()
         # Look for date patterns in event rows: | 2026-04-19 | ... |
-        m = re.match(r"\|\s*(\d{4}-\d{2}-\d{2})\s*\|.*\|.*\[ \].*\|", line)
-        if not m:
+        cells = _split_table_row(line)
+        if len(cells) < 5 or "- [ ]" not in cells[4]:
             continue
-        event_date = _parse_date(m.group(1))
+        event_date = _parse_date(cells[0])
         if event_date and (today - event_date).days > 7:
-            desc = line.strip("| ")[:60]
+            desc = " | ".join(cells[:3])[:60]
             issues.append(Issue("warn", "calendar", "docs/calendar.md",
                                 f"unchecked past event ({event_date}): {desc}"))
+    return issues
+
+
+def check_parser_contracts(notes: list[Note], today: date) -> list[Issue]:
+    """Catch drift between vault conventions and the parsers that depend on them."""
+    issues: list[Issue] = []
+
+    guide_path = VAULT_ROOT / "CLAUDE.md"
+    if guide_path.exists():
+        guide = guide_path.read_text(encoding="utf-8")
+        folder_section = _section_body(guide, "Folder Structure")
+        documented_folders = {
+            item.split("/", 1)[0]
+            for item in re.findall(r"`([^`]+/)`", folder_section)
+        }
+        note_folders = documented_folders - {"scripts", "templates", "bases"}
+        missing_folders = sorted(note_folders - set(CONTENT_FOLDERS))
+        if missing_folders:
+            issues.append(Issue(
+                "error", "parser", "scripts/lint.py",
+                f"CONTENT_FOLDERS missing documented note folder(s): {missing_folders}",
+            ))
+
+        m = re.search(r"`type`\s+—\s+one of:\s+([^\n]+)", guide)
+        if m:
+            documented_types = set(re.findall(r"`([^`]+)`", m.group(1)))
+            missing_types = sorted(documented_types - ALLOWED_TYPES)
+            extra_types = sorted(ALLOWED_TYPES - documented_types)
+            if missing_types:
+                issues.append(Issue(
+                    "error", "parser", "scripts/lint.py",
+                    f"ALLOWED_TYPES missing documented type(s): {missing_types}",
+                ))
+            if extra_types:
+                issues.append(Issue(
+                    "warn", "parser", "scripts/lint.py",
+                    f"ALLOWED_TYPES contains undocumented type(s): {extra_types}",
+                ))
+            for t in sorted(documented_types | ALLOWED_TYPES):
+                if t not in REQUIRED_FIELDS:
+                    issues.append(Issue("error", "parser", "scripts/lint.py",
+                                        f"REQUIRED_FIELDS missing type={t!r}"))
+                if t not in ALLOWED_STATUS_BY_TYPE:
+                    issues.append(Issue("error", "parser", "scripts/lint.py",
+                                        f"ALLOWED_STATUS_BY_TYPE missing type={t!r}"))
+        else:
+            issues.append(Issue("warn", "parser", "CLAUDE.md",
+                                "could not parse documented frontmatter type list"))
+
+    templates_dir = VAULT_ROOT / "templates"
+    if templates_dir.exists():
+        for tmpl in sorted(templates_dir.glob("*.md")):
+            raw = tmpl.read_text(encoding="utf-8")
+            fm_text, _ = _split_frontmatter(raw)
+            rel = tmpl.relative_to(VAULT_ROOT).as_posix()
+            if fm_text is None:
+                issues.append(Issue("error", "parser", rel,
+                                    "template missing frontmatter block"))
+                continue
+            try:
+                fm = yaml.safe_load(fm_text) or {}
+            except yaml.YAMLError as e:
+                issues.append(Issue("error", "parser", rel,
+                                    f"template YAML parse failed: {e}"))
+                continue
+            t = fm.get("type")
+            if not t:
+                issues.append(Issue("error", "parser", rel,
+                                    "template missing `type`"))
+                continue
+            if t not in ALLOWED_TYPES:
+                issues.append(Issue("error", "parser", rel,
+                                    f"template type {t!r} not in ALLOWED_TYPES"))
+                continue
+            missing = REQUIRED_FIELDS.get(t, set()) - fm.keys()
+            if missing:
+                issues.append(Issue("error", "parser", rel,
+                                    f"template missing required fields for type={t}: {sorted(missing)}"))
+
+    calendar = next((n for n in notes if n.rel_path == "docs/calendar.md"), None)
+    if calendar:
+        for idx, line in enumerate(calendar.body.splitlines(), start=1):
+            cells = _split_table_row(line)
+            if not cells or _is_separator_row(cells) or cells[0] == "Date":
+                continue
+            if _parse_date(cells[0]) is None:
+                continue
+            if len(cells) != 5:
+                issues.append(Issue("error", "parser", "docs/calendar.md",
+                                    f"calendar row line {idx} parsed {len(cells)} columns, expected 5"))
+                continue
+            if "- [ ]" not in cells[4] and "- [x]" not in cells[4]:
+                issues.append(Issue("warn", "parser", "docs/calendar.md",
+                                    f"calendar row line {idx} has no task status cell"))
+
+    backlog = next((n for n in notes if n.rel_path == "docs/research-backlog.md"), None)
+    if backlog:
+        section = None
+        for idx, line in enumerate(backlog.body.splitlines(), start=1):
+            s = line.strip()
+            if s == "## Open":
+                section = "open"
+                continue
+            if s == "## Resolved":
+                section = "resolved"
+                continue
+            cells = _split_table_row(line)
+            if not cells or _is_separator_row(cells) or cells[0] in {"#", "—"}:
+                continue
+            if section == "open" and len(cells) != 7:
+                issues.append(Issue("error", "parser", "docs/research-backlog.md",
+                                    f"open backlog row line {idx} parsed {len(cells)} columns, expected 7"))
+            if section == "resolved" and len(cells) != 4:
+                issues.append(Issue("error", "parser", "docs/research-backlog.md",
+                                    f"resolved backlog row line {idx} parsed {len(cells)} columns, expected 4"))
+
+    for n in notes:
+        if n.folder != "strategy" or n.type != "strategy":
+            continue
+        hyp = _section_body(_strip_code(n.body), "Hypotheses")
+        if not hyp.strip():
+            continue
+        for idx, line in enumerate(hyp.splitlines(), start=1):
+            cells = _split_table_row(line)
+            if not cells or _is_separator_row(cells) or cells[0] == "#":
+                continue
+            if len(cells) != 9:
+                issues.append(Issue("error", "parser", n.rel_path,
+                                    f"hypothesis row parsed {len(cells)} columns, expected 9 near section line {idx}"))
+
+    try:
+        result = subprocess.run(
+            [sys.executable, str(VAULT_ROOT / "scripts" / "briefing.py"),
+             "--today", today.isoformat()],
+            cwd=VAULT_ROOT,
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=10,
+        )
+    except Exception as e:
+        issues.append(Issue("warn", "parser", "scripts/briefing.py",
+                            f"briefing smoke test failed to run: {e}"))
+    else:
+        output = result.stdout + result.stderr
+        if result.returncode != 0:
+            issues.append(Issue("error", "parser", "scripts/briefing.py",
+                                f"briefing smoke test exited {result.returncode}"))
+        for bad in ("[[strategy/", r"\|", "{{"):
+            if bad in output:
+                sample = next((ln.strip() for ln in output.splitlines() if bad in ln), bad)
+                issues.append(Issue("warn", "parser", "scripts/briefing.py",
+                                    f"briefing output may be mangled: {sample[:90]}"))
+
     return issues
 
 
@@ -736,11 +919,12 @@ def print_report(issues: list[Issue], file_count: int, today: date) -> int:
     for i in issues:
         buckets.setdefault(i.category, []).append(i)
 
-    order = ["schema", "wikilink", "backlink", "staleness", "log", "orphan",
+    order = ["schema", "parser", "wikilink", "backlink", "staleness", "log", "orphan",
              "hypotheses", "decisions", "consistency", "gaps", "backlog", "calendar",
              "sources", "figures"]
     labels = {
         "schema": "SCHEMA",
+        "parser": "PARSER CONTRACTS",
         "wikilink": "WIKILINKS",
         "backlink": "BACKLINKS",
         "staleness": "STALENESS",
@@ -795,6 +979,7 @@ def main() -> int:
 
     all_issues: list[Issue] = []
     all_issues += check_frontmatter(notes)
+    all_issues += check_parser_contracts(notes, today)
     all_issues += check_wikilinks(notes)
     all_issues += check_backlinks(notes)
     all_issues += check_staleness(notes, today)

@@ -11,6 +11,13 @@ Run a structured portfolio review. The depth depends on the period.
 
 Ask the user which period (weekly, monthly, quarterly) if not specified. Use the one that briefing.py flagged as overdue if ambiguous.
 
+If the user asks for a weekly "review and/or scan" and a weekly review already exists from the past 7 days, run/write the scan first. Only create another weekly review note if at least one is true:
+- new portfolio data or a new snapshot was pulled
+- a hypothesis triggered
+- a new decision/action needs review context
+- the latest scan materially changes thesis health
+- the user explicitly asks for a new review note after seeing the scan summary
+
 | Period | Depth | Time | When |
 |--------|-------|------|------|
 | Weekly | Light | 15–30 min | Every 7 days |
@@ -28,7 +35,7 @@ Run these before writing anything:
    - Run `scripts/snapshot.py` to create today's snapshot (if none exists)
    - Run `scripts/portfolio_diff.py` to diff against last snapshot
 3. **Read context:** `strategy/Investment Strategy.md` and `docs/session-log.md` (last 2–3 entries)
-4. **Read latest scan:** if a scan exists from the past 7 days in `scans/`, read it. If not, recommend running `/weekly-scan` first (or run it as part of the review).
+4. **Read latest scan:** if a scan exists from the past 7 days in `scans/`, read it. If not, run `/weekly-scan` first. Weekly reviews should ingest scans, but scans can stand alone when no portfolio review is warranted.
 
 ## Step 3 — Period-specific checks
 
