@@ -1,0 +1,53 @@
+filters:
+  and:
+    - 'type == "holding"'
+    - file.inFolder("holdings")
+properties:
+  ticker:
+    displayName: Ticker
+  status:
+    displayName: Status
+  conviction:
+    displayName: Conv
+  theme:
+    displayName: Theme
+  time_horizon:
+    displayName: Horizon
+  last_updated:
+    displayName: Updated
+views:
+  - type: table
+    name: Active (by Conviction)
+    filters:
+      and:
+        - 'status == "active"'
+    order:
+      - ticker
+      - conviction
+      - theme
+      - time_horizon
+      - last_updated
+    sort:
+      - property: conviction
+        direction: DESC
+  - type: table
+    name: All Holdings
+    order:
+      - ticker
+      - status
+      - conviction
+      - theme
+      - last_updated
+    sort:
+      - property: conviction
+        direction: DESC
+  - type: table
+    name: Staleness
+    order:
+      - ticker
+      - status
+      - conviction
+      - last_updated
+    sort:
+      - property: last_updated
+        direction: ASC

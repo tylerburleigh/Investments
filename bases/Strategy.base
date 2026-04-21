@@ -1,0 +1,47 @@
+filters:
+  and:
+    - 'type == "strategy"'
+    - file.inFolder("strategy")
+properties:
+  status:
+    displayName: Status
+  last_updated:
+    displayName: Updated
+  parent_thesis:
+    displayName: Parent Thesis
+views:
+  - type: table
+    name: Staleness (oldest first)
+    order:
+      - file.name
+      - status
+      - last_updated
+      - parent_thesis
+    sort:
+      - property: last_updated
+        direction: ASC
+  - type: table
+    name: Theses Only
+    filters:
+      and:
+        - file.name.startsWith("thesis-")
+    order:
+      - file.name
+      - status
+      - last_updated
+    sort:
+      - property: last_updated
+        direction: ASC
+  - type: table
+    name: Themes Only
+    filters:
+      and:
+        - file.name.startsWith("theme-")
+    order:
+      - file.name
+      - status
+      - parent_thesis
+      - last_updated
+    sort:
+      - property: last_updated
+        direction: ASC

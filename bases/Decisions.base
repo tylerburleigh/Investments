@@ -1,0 +1,43 @@
+filters:
+  and:
+    - 'type == "decision"'
+    - file.inFolder("decisions")
+properties:
+  ticker:
+    displayName: Ticker
+  action:
+    displayName: Action
+  conviction:
+    displayName: Conv
+  time_horizon:
+    displayName: Horizon
+  status:
+    displayName: Status
+  date:
+    displayName: Date
+views:
+  - type: table
+    name: All Decisions (newest first)
+    order:
+      - date
+      - ticker
+      - action
+      - conviction
+      - status
+    sort:
+      - property: date
+        direction: DESC
+  - type: table
+    name: Active Decisions
+    filters:
+      and:
+        - 'status == "active"'
+    order:
+      - date
+      - ticker
+      - action
+      - conviction
+      - time_horizon
+    sort:
+      - property: date
+        direction: DESC
