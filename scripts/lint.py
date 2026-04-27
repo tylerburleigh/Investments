@@ -12,6 +12,7 @@ Checks:
   - Research backlog overdue items
   - Source callout quality (citation present, date/year attached)
   - Untyped market-size figures in strategy doc prose
+  - Calendar table parser contracts (five columns, canonical header, task status)
   - Parser contracts for documented note types, content folders, templates, and automation tables
 
 Usage:
@@ -80,6 +81,8 @@ FENCED_CODE_RE = re.compile(r"```.*?```", re.DOTALL)
 INLINE_CODE_RE = re.compile(r"`[^`\n]+`")
 CALLOUT_GAP_RE = re.compile(r">\s*\[!(gap|unverified)\]([^\n]*)", re.IGNORECASE)
 BACKLOG_ROW_RE = re.compile(r"^\|(.+?)\|(.+?)\|(.+?)\|(.+?)\|(.+?)\|(.+?)\|(.+?)\|")
+CALENDAR_HEADER = ["Date", "Event", "Thesis / Theme", "Hypothesis", "Status"]
+CALENDAR_STATUS_RE = re.compile(r"- \[[ xX]\]")
 
 CALLOUT_SOURCE_RE = re.compile(r">\s*\[!source\]([^\n]*)", re.IGNORECASE)
 MARKET_SIZE_FIGURE_RE = re.compile(
@@ -699,6 +702,62 @@ def check_event_calendar(notes: list[Note], today: date) -> list[Issue]:
     return issues
 
 
+def _check_calendar_parser_contract(calendar: Note) -> list[Issue]:
+    """Validate docs/calendar.md table rows before calendar parsers consume them."""
+    issues: list[Issue] = []
+    expected_cols = len(CALENDAR_HEADER)
+    expected_header = f"| {' | '.join(CALENDAR_HEADER)} |"
+
+    for idx, line in enumerate(calendar.body.splitlines(), start=1):
+        s = line.strip()
+        if not s.startswith("|"):
+            continue
+        if not s.endswith("|"):
+            issues.append(Issue(
+                "error", "parser", "docs/calendar.md",
+                f"calendar table row body line {idx} is missing a trailing `|`",
+            ))
+            continue
+
+        cells = _split_table_row(s)
+        if not cells:
+            continue
+        if _is_separator_row(cells):
+            if len(cells) != expected_cols:
+                issues.append(Issue(
+                    "error", "parser", "docs/calendar.md",
+                    f"calendar separator body line {idx} parsed {len(cells)} columns, expected {expected_cols}",
+                ))
+            continue
+        if cells[0] == "Date":
+            if cells != CALENDAR_HEADER:
+                issues.append(Issue(
+                    "error", "parser", "docs/calendar.md",
+                    f"calendar header body line {idx} must be: {expected_header}",
+                ))
+            continue
+        if len(cells) != expected_cols:
+            issues.append(Issue(
+                "error", "parser", "docs/calendar.md",
+                f"calendar table row body line {idx} parsed {len(cells)} columns, expected {expected_cols}",
+            ))
+            continue
+
+        if _parse_date(cells[0]) is None:
+            issues.append(Issue(
+                "warn", "parser", "docs/calendar.md",
+                f"calendar table row body line {idx} has an unparsable date: {cells[0]!r}",
+            ))
+            continue
+        if not CALENDAR_STATUS_RE.search(cells[4]):
+            issues.append(Issue(
+                "warn", "parser", "docs/calendar.md",
+                f"calendar table row body line {idx} has no task status cell",
+            ))
+
+    return issues
+
+
 def check_parser_contracts(notes: list[Note], today: date) -> list[Issue]:
     """Catch drift between vault conventions and the parsers that depend on them."""
     issues: list[Issue] = []
@@ -777,19 +836,7 @@ def check_parser_contracts(notes: list[Note], today: date) -> list[Issue]:
 
     calendar = next((n for n in notes if n.rel_path == "docs/calendar.md"), None)
     if calendar:
-        for idx, line in enumerate(calendar.body.splitlines(), start=1):
-            cells = _split_table_row(line)
-            if not cells or _is_separator_row(cells) or cells[0] == "Date":
-                continue
-            if _parse_date(cells[0]) is None:
-                continue
-            if len(cells) != 5:
-                issues.append(Issue("error", "parser", "docs/calendar.md",
-                                    f"calendar row line {idx} parsed {len(cells)} columns, expected 5"))
-                continue
-            if "- [ ]" not in cells[4] and "- [x]" not in cells[4]:
-                issues.append(Issue("warn", "parser", "docs/calendar.md",
-                                    f"calendar row line {idx} has no task status cell"))
+        issues.extend(_check_calendar_parser_contract(calendar))
 
     backlog = next((n for n in notes if n.rel_path == "docs/research-backlog.md"), None)
     if backlog:

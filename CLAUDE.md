@@ -391,6 +391,7 @@ When a hypothesis triggers: update Status + Evaluated in the table, append a dat
 | Date | Event | Thesis / Theme | Hypothesis | Status |
 ```
 Use `- [ ]` for unchecked (pending evaluation). When an event occurs and the hypothesis is evaluated, check the box and move the row to the Evaluated section. `lint.py` flags unchecked past events older than 7 days. `briefing.py` surfaces events in the next 30 days.
+All calendar sections, including Evaluated, must keep the exact five-column table shape above; `lint.py` treats malformed headers, separators, rows, dates, and status cells as parser-contract issues.
 
 **Allocation drift** — `scripts/allocation_drift.py` reads target allocations from the Investment Strategy table and actual values from the latest snapshot JSON sidecar, then computes drift by category. Run during reviews to flag overweight/underweight positions without manual computation.
 
