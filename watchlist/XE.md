@@ -1,6 +1,7 @@
 ---
 ticker: XE
 date: 2026-04-21
+last_updated: 2026-04-27
 type: watchlist
 status: watching
 tags: [ipo, nuclear, smr, ai-power, energy]
@@ -30,14 +31,22 @@ This is not automatically a better bet than OKLO. The key question is whether X-
 
 | Metric | Value |
 |--------|-------|
-| Proposed Ticker | XE |
-| Price Range | $16-$19 |
-| Deal Size | ~$750M |
-| Reported Market Cap at IPO | ~$7.1B |
+| Ticker | XE |
+| IPO Price | $23 |
+| Shares Offered | 44,254,659 Class A shares |
+| Deal Size | ~$1.02B gross before underwriter option |
+| Listing | Nasdaq Global Select Market, trading expected 2026-04-24 |
 | IPO File Date | 2026-03-20 |
 | Main Risk | Commercial SMR deployment is still years away |
 
 ## Notes
+
+### 2026-04-27 - IPO priced above range
+
+X-Energy priced an upsized IPO at $23/share, above the prior $16-$19 range, with trading expected on Nasdaq under `XE` on 2026-04-24 and closing expected 2026-04-27. This is positive market validation for the SMR / AI-power theme, but it also means the first review should focus on valuation discipline and whether XE is only a benchmark for [[holdings/OKLO]] or a real candidate.
+
+Source:
+- X-energy pricing release: https://x-energy.com/news/x-energy-announces-pricing-of-upsized-initial-public-offering/
 
 ### 2026-04-21 - Added to IPO watchlist
 

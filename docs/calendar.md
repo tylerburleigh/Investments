@@ -1,6 +1,6 @@
 ---
 date: 2026-04-19
-last_updated: 2026-04-21
+last_updated: 2026-04-27
 type: reference
 status: active
 tags: [calendar, events, catalysts]
@@ -58,8 +58,8 @@ IPO candidates are tracked only when they map to an active thesis/theme or could
 
 | Date | Event | Thesis / Theme | Hypothesis | Status |
 |------|-------|---------------|------------|--------|
-| 2026-04-28 | X-Energy IPO pricing / first-week follow-up | [[strategy/theme-nuclear\|Nuclear]] | [[watchlist/XE\|XE IPO watchlist]] | - [ ] |
-| 2026-04-28 | The Elmet Group IPO pricing / first-week follow-up | [[strategy/thesis-space\|Space]] / [[strategy/thesis-ai\|AI]] | [[watchlist/ELMT\|ELMT IPO watchlist]] | - [ ] |
+| 2026-04-30 | X-Energy first-week trading / valuation follow-up | [[strategy/theme-nuclear\|Nuclear]] | [[watchlist/XE\|XE IPO watchlist]] | - [ ] |
+| 2026-04-30 | The Elmet Group first-week trading / liquidity follow-up | [[strategy/thesis-space\|Space]] / [[strategy/thesis-ai\|AI]] | [[watchlist/ELMT\|ELMT IPO watchlist]] | - [ ] |
 | 2026-05-15 | SpaceX/xAI public S-1 check | [[strategy/thesis-space\|Space]] / [[strategy/thesis-ai\|AI]] | [[watchlist/SPACEX\|SPACEX IPO watchlist]] | - [ ] |
 | 2026-06-30 | OpenAI / Anthropic IPO filing status check | [[strategy/thesis-ai\|AI]] | [[docs/ipo-watchlist\|IPO watchlist process]] | - [ ] |
 
@@ -112,6 +112,7 @@ IPO candidates are tracked only when they map to an active thesis/theme or could
 
 *Past events move here once their hypothesis has been evaluated. Include the outcome.*
 
-| Date | Event | Result | Evaluated |
-|------|-------|--------|-----------|
-| — | — | — | — |
+| Date | Event | Thesis / Theme | Hypothesis | Status |
+|------|-------|---------------|------------|--------|
+| 2026-04-23 | X-Energy IPO priced | [[strategy/theme-nuclear\|Nuclear]] | [[watchlist/XE\|XE IPO watchlist]] | - [x] Priced upsized IPO at $23/share; first-week follow-up moved to Apr 30 |
+| 2026-04-22 | The Elmet Group IPO priced | [[strategy/thesis-space\|Space]] / [[strategy/thesis-ai\|AI]] | [[watchlist/ELMT\|ELMT IPO watchlist]] | - [x] Priced at $14/share; closed Apr 24 with full option exercise; first-week follow-up moved to Apr 30 |

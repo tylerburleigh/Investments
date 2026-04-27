@@ -1,6 +1,6 @@
 ---
 date: 2026-04-19
-last_updated: 2026-04-23
+last_updated: 2026-04-27
 type: reference
 status: active
 tags: [log, sessions, continuity]
@@ -20,6 +20,11 @@ Append-only. One entry per session. Newest on top. The agent reads this at sessi
 ```
 
 ---
+
+### [2026-04-27] session | weekly scan and review
+- Worked on: ran briefing, backlog sync, lint, allocation drift, and a full 9-thesis weekly scan; created [[scans/2026-04-27]] and [[reviews/2026-04-27-weekly]]; updated [[watchlist/XE]] and [[watchlist/ELMT]] after their IPO pricing/trading events; moved the IPO calendar follow-ups to Apr 30.
+- Deferred: no fresh SnapTrade snapshot was available through Codex tools; AMKR Q1, Apr 29 hyperscaler earnings, TSMC A16 wording, and May 1 BTC/NIO/LI checks remain open.
+- Notes: no conviction changes and no portfolio decisions. Biggest review item is whether [[strategy/thesis-tech-conviction#H4|Tech H4]] should distinguish A16 technology readiness in 2026 from customer volume production in 2027.
 
 ### [2026-04-23] session | AI thesis capability dashboard
 - Worked on: turned the "AI model capability progression" question into a concrete dashboard inside [[strategy/thesis-ai]], adding a weighted scorecard, threshold bands, downgrade triggers, benchmark-selection rules, and a new hypothesis (`H5`) tied to robust real-work evals.
