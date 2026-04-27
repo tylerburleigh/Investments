@@ -11,7 +11,7 @@ tags: [scan, weekly]
 
 ## Summary
 
-Theses/themes scanned: {{scanned_count}}/{{active_count}} | Hypothesis triggers: | Directional signals: | Nothing significant:
+Theses/themes scanned: {{scanned_count}}/{{active_count}} | Hypothesis triggers: | Directional signals: | Disconfirming signals: | Nothing significant:
 
 Scan window: {{start_date}} through {{date}}
 
@@ -25,6 +25,7 @@ Scan window: {{start_date}} through {{date}}
        - delete unscanned thesis sections instead of leaving empty placeholders
      - Hypothesis Triggers: conclusive evidence that confirms/disconfirms an open hypothesis.
      - Directional Signals: partial evidence, thesis-relevant but not conclusive.
+     - Disconfirming Evidence: facts that weaken, falsify, or complicate the thesis.
      - Potential Backlog Resolutions: news that might answer an open research-backlog question.
      Count active thesis/theme docs from strategy/thesis-*.md and strategy/theme-*.md; do not hard-code the denominator.
      Every finding must include:
@@ -38,12 +39,16 @@ Scan window: {{start_date}} through {{date}}
 
 ### Directional Signals
 
+### Disconfirming Evidence
+
 ### Potential Backlog Resolutions
 
 ## Crypto — [[strategy/thesis-crypto|Crypto Thesis]]
 ### Hypothesis Triggers
 
 ### Directional Signals
+
+### Disconfirming Evidence
 
 ### Potential Backlog Resolutions
 
@@ -52,12 +57,16 @@ Scan window: {{start_date}} through {{date}}
 
 ### Directional Signals
 
+### Disconfirming Evidence
+
 ### Potential Backlog Resolutions
 
 ## Space — [[strategy/thesis-space|Space Thesis]]
 ### Hypothesis Triggers
 
 ### Directional Signals
+
+### Disconfirming Evidence
 
 ### Potential Backlog Resolutions
 
@@ -66,12 +75,16 @@ Scan window: {{start_date}} through {{date}}
 
 ### Directional Signals
 
+### Disconfirming Evidence
+
 ### Potential Backlog Resolutions
 
 ## Nuclear — [[strategy/theme-nuclear|Nuclear Theme]]
 ### Hypothesis Triggers
 
 ### Directional Signals
+
+### Disconfirming Evidence
 
 ### Potential Backlog Resolutions
 
@@ -80,12 +93,16 @@ Scan window: {{start_date}} through {{date}}
 
 ### Directional Signals
 
+### Disconfirming Evidence
+
 ### Potential Backlog Resolutions
 
 ## Quantum — [[strategy/theme-quantum|Quantum Theme]]
 ### Hypothesis Triggers
 
 ### Directional Signals
+
+### Disconfirming Evidence
 
 ### Potential Backlog Resolutions
 
@@ -94,7 +111,12 @@ Scan window: {{start_date}} through {{date}}
 
 ### Directional Signals
 
+### Disconfirming Evidence
+
 ### Potential Backlog Resolutions
+
+## Disconfirming Evidence
+<!-- Cross-thesis bear-case summary. If none was found, say "No material disconfirming evidence found" and name the searches/areas checked. -->
 
 ## Review References
 <!-- Populated by /review when this scan is ingested into a review. -->

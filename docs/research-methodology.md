@@ -1,6 +1,6 @@
 ---
 date: 2026-04-19
-last_updated: 2026-04-23
+last_updated: 2026-04-27
 type: reference
 status: active
 tags: [research, methodology, sources]
@@ -16,6 +16,7 @@ Reference doc covering when to research, how to research, and which sources to t
 
 ### Weekly (~15–30 min)
 - Scan news for thesis-relevant events (Tavily search by thesis tag)
+- Search explicitly for disconfirming evidence and write it under `## Disconfirming Evidence` in the scan, even if the result is "none found"
 - Check hypothesis tables in thesis docs for triggered conditions
 - Write significant findings to `scans/YYYY-MM-DD.md`; do not append signals to `decisions/log.md`
 - Default to a full weekly scan. Use a partial scan only for a mid-week thesis-relevant development worth logging before the next weekly review.
@@ -28,10 +29,12 @@ Reference doc covering when to research, how to research, and which sources to t
 - Review `docs/research-backlog.md` for overdue items; resolve or push dates with a note
 - Pick 1–3 backlog items to research deeply; update thesis docs with findings
 - Evaluate any hypotheses whose timeframes have passed
+- Promote accumulated disconfirming evidence into thesis/theme updates and revise conviction or kill criteria when warranted
 - Update `last_updated` on any thesis/theme docs touched
 
 ### Quarterly (~half day, aligned with quarterly review)
 - Full thesis stress test: re-read each thesis doc and ask "does this thesis still hold?"
+- Re-test every active thesis/theme against explicit kill criteria
 - Evaluate all open hypotheses — confirmed, disconfirmed, or expired?
 - Update conviction levels in the active positions tables
 - Review trusted-sources list below — add new sources discovered, retire ones that proved unreliable
@@ -136,6 +139,7 @@ Use these labels in `scans/YYYY-MM-DD.md`:
 | commentary | Analyst blogs, Motley Fool, SimplyWallSt, crypto-native media | Use only when underlying data is verifiable |
 
 Each scan signal should also be labeled `New this week` or `Carried from prior log/review` to avoid double-counting old evidence during monthly synthesis.
+Each scan must include a `## Disconfirming Evidence` section. Positive evidence and adverse evidence should be separated so a future review can see whether the thesis got stronger or merely received attention.
 Partial scans should be labeled explicitly as partial, state the actual `theses_scanned` count, say they were not a full weekly pass, and include only the thesis sections actually checked.
 - **Analyst price targets.** Ignore the target; understand the model and assumptions if available.
 

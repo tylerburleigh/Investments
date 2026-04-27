@@ -44,6 +44,10 @@ tags: [review]
 <!-- For monthly/quarterly: any holdings where the thesis has weakened, changed, or needs revisiting?
      Flag if conviction should be revised up or down. -->
 
+## Bear Case / Disconfirming Evidence
+<!-- Required counterweight. What evidence this period weakens the current portfolio narrative?
+     Include "none found" only after naming the areas checked. Convert real thesis-breaking items into action items, kill-criteria reviews, or decisions. -->
+
 ## Lint Agenda (monthly+)
 <!-- Run: python3 scripts/lint.py --write-index
      Paste staleness warnings and unresolved-holding warnings here to drive the agenda. -->

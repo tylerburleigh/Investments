@@ -21,6 +21,11 @@ Append-only. One entry per session. Newest on top. The agent reads this at sessi
 
 ---
 
+### [2026-04-27] session | counterweight scaffolding
+- Worked on: added counterweight discipline to [[CLAUDE]], [[docs/research-methodology]], scan/review/thesis/theme/holding templates, local weekly-scan/review skill prompts, and `scripts/lint.py`; retrofitted [[scans/2026-04-27]] and [[reviews/2026-04-27-weekly]] with disconfirming evidence / bear-case sections.
+- Deferred: existing thesis/theme and holding notes do not yet have `## Kill Criteria`; lint will require that section when each note is created or meaningfully updated from 2026-04-27 onward.
+- Notes: `python3 scripts/lint.py --today 2026-04-27` reports 0 errors / 0 warnings, including the new COUNTERWEIGHTS category.
+
 ### [2026-04-27] session | weekly scan and review
 - Worked on: ran briefing, backlog sync, lint, allocation drift, and a full 9-thesis weekly scan; created [[scans/2026-04-27]] and [[reviews/2026-04-27-weekly]]; updated [[watchlist/XE]] and [[watchlist/ELMT]] after their IPO pricing/trading events; moved the IPO calendar follow-ups to Apr 30.
 - Deferred: no fresh SnapTrade snapshot was available through Codex tools; AMKR Q1, Apr 29 hyperscaler earnings, TSMC A16 wording, and May 1 BTC/NIO/LI checks remain open.

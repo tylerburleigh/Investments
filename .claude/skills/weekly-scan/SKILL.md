@@ -1,11 +1,11 @@
 ---
 name: weekly-scan
-description: Run a weekly thesis-relevant news scan. Reads all active thesis/theme docs, runs targeted Tavily searches per thesis, checks for hypothesis triggers, and writes a dated scan artifact to scans/. Use when the user says "run the weekly scan", "scan for news", "check thesis triggers", "what happened this week", or when the research methodology weekly cadence is due.
+description: Run a weekly thesis-relevant news scan. Reads all active thesis/theme docs, runs targeted Tavily searches per thesis, checks for hypothesis triggers and disconfirming evidence, and writes a dated scan artifact to scans/. Use when the user says "run the weekly scan", "scan for news", "check thesis triggers", "what happened this week", or when the research methodology weekly cadence is due.
 ---
 
 # /weekly-scan
 
-Scan thesis-relevant news and check for hypothesis triggers across all active positions.
+Scan thesis-relevant news, check for hypothesis triggers, and explicitly look for disconfirming evidence across all active positions.
 
 ## Step 1 — Read active theses
 
@@ -28,6 +28,7 @@ For each thesis, construct 1-2 recurring targeted search queries based on:
 - Active positions and their near-term catalysts (earnings, product launches, regulatory events)
 - Open hypotheses nearing their timeframe deadlines
 - Unverified claims or gaps that recent news might resolve
+- Bear-case checks: failure to execute, missed milestones, adverse regulation, margin/financing pressure, valuation excess, or better competing expressions of the same thesis
 
 **Query construction rules:**
 - Use specific entity names where possible (company names, tickers, program names)
@@ -105,6 +106,11 @@ For each search result that is relevant to a thesis, filter by source quality FI
    - If a search surfaces an upcoming earnings date, mission window, regulatory deadline, or other catalyst tied to a hypothesis, add it to `docs/calendar.md`.
    - Calendar additions should link the relevant thesis/theme and hypothesis when possible.
 
+6. **Check for disconfirming evidence**:
+   - Identify evidence that weakens, falsifies, or complicates the thesis even if it is not a formal hypothesis trigger.
+   - Separate adverse evidence from positive directional signals so reviews can see whether a thesis is strengthening or merely getting attention.
+   - If no material adverse evidence appears, record that explicitly and name the thesis areas checked.
+
 ## Step 5 — Present findings to user
 
 Present a structured summary of findings. Categorize each finding by type:
@@ -124,6 +130,11 @@ Present a structured summary of findings. Categorize each finding by type:
 - Note which backlog item and what the finding is
 - Recommend running `/research {item_id}` to properly resolve it
 
+**Disconfirming evidence:**
+- Summarize any adverse or thesis-weakening evidence with source citation
+- Say whether it is a formal hypothesis trigger, a directional warning, or a kill-criteria review item
+- Include it in the scan artifact even if the rest of the thesis section is positive
+
 **If nothing significant was found for a thesis:**
 - Say so explicitly: "No significant developments for {thesis name}."
 
@@ -134,6 +145,7 @@ Write the scan results to `scans/YYYY-MM-DD.md` using the template at `templates
 **Structure per thesis:**
 - **Hypothesis Triggers** — any conclusive evidence with source citation (publication + article date)
 - **Directional Signals** — partial evidence with source citation
+- **Disconfirming Evidence** — adverse evidence or "No material disconfirming evidence found" with areas checked
 - **Potential Backlog Resolutions** — which backlog items have new source material
 
 **Every finding must include:**
@@ -144,6 +156,8 @@ Write the scan results to `scans/YYYY-MM-DD.md` using the template at `templates
 - 1-2 sentence explanation of what it means directionally
 
 **Frontmatter:** fill in `theses_scanned` (count of active thesis/theme docs scanned), `signals_found` (count of hypothesis triggers + directional signals).
+
+**Counterweight:** fill in the top-level `## Disconfirming Evidence` section with a cross-thesis summary. This section must be non-empty.
 
 **Summary denominator:** count active `strategy/thesis-*.md` and `strategy/theme-*.md` files. Do not hard-code `10`.
 
@@ -157,6 +171,7 @@ Scan written to: scans/YYYY-MM-DD.md
 Theses/themes scanned: X/Y
 Hypothesis triggers: N (list them)
 Directional signals: M (list them)
+Disconfirming signals: D (list them)
 Nothing significant: K theses
 
 Next steps: [any recommended actions — research items, hypothesis evaluations to watch]

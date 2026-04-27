@@ -12,6 +12,7 @@ Checks:
   - Research backlog overdue items
   - Source callout quality (citation present, date/year attached)
   - Untyped market-size figures in strategy doc prose
+  - Counterweight sections in new scans/reviews and kill criteria in updated thesis/holding docs
   - Calendar table parser contracts (five columns, canonical header, task status)
   - Parser contracts for documented note types, content folders, templates, and automation tables
 
@@ -72,6 +73,11 @@ STALENESS_DAYS = {
     "strategy_thesis": 180,  # strategy/thesis-* and strategy/theme-*
     "strategy_hub": 30,      # strategy/Investment Strategy.md
 }
+
+COUNTERWEIGHT_REQUIRED_FROM = date(2026, 4, 27)
+SCAN_COUNTERWEIGHT_HEADING = "Disconfirming Evidence"
+REVIEW_COUNTERWEIGHT_HEADING = "Bear Case / Disconfirming Evidence"
+KILL_CRITERIA_HEADING = "Kill Criteria"
 
 CONTENT_FOLDERS = ["holdings", "decisions", "portfolio", "reviews",
                    "strategy", "watchlist", "docs", "scans"]
@@ -281,6 +287,19 @@ def _section_body(body: str, heading: str) -> str:
         if in_section:
             out.append(line)
     return "\n".join(out)
+
+
+def _has_heading(body: str, heading: str) -> bool:
+    return any(line.strip() == f"## {heading}" for line in body.splitlines())
+
+
+def _section_has_content(body: str, heading: str) -> bool:
+    """Return true when a section exists and has non-comment, non-blank content."""
+    section = _section_body(body, heading)
+    if not section:
+        return False
+    section = re.sub(r"<!--.*?-->", "", section, flags=re.DOTALL)
+    return any(line.strip() for line in section.splitlines())
 
 
 def check_wikilinks(notes: list[Note]) -> list[Issue]:
@@ -681,6 +700,64 @@ def check_cross_thesis_conviction(notes: list[Note]) -> list[Issue]:
     return issues
 
 
+def check_counterweights(notes: list[Note]) -> list[Issue]:
+    """Require explicit anti-confirmation-bias sections in new/updated notes."""
+    issues: list[Issue] = []
+
+    template_requirements = {
+        "templates/scan.md": SCAN_COUNTERWEIGHT_HEADING,
+        "templates/review.md": REVIEW_COUNTERWEIGHT_HEADING,
+        "templates/thesis.md": KILL_CRITERIA_HEADING,
+        "templates/theme.md": KILL_CRITERIA_HEADING,
+        "templates/holding.md": KILL_CRITERIA_HEADING,
+    }
+    for rel, heading in template_requirements.items():
+        path = VAULT_ROOT / rel
+        if path.exists() and not _has_heading(path.read_text(encoding="utf-8"), heading):
+            issues.append(Issue(
+                "error", "counterweight", rel,
+                f"template missing required `## {heading}` section",
+            ))
+
+    for n in notes:
+        effective_date = n.last_updated or n.date
+        if effective_date is None or effective_date < COUNTERWEIGHT_REQUIRED_FROM:
+            continue
+
+        if n.type == "scan":
+            if not _section_has_content(n.body, SCAN_COUNTERWEIGHT_HEADING):
+                issues.append(Issue(
+                    "error", "counterweight", n.rel_path,
+                    f"scan needs a non-empty `## {SCAN_COUNTERWEIGHT_HEADING}` section",
+                ))
+            continue
+
+        if n.type == "review":
+            if not _section_has_content(n.body, REVIEW_COUNTERWEIGHT_HEADING):
+                issues.append(Issue(
+                    "error", "counterweight", n.rel_path,
+                    f"review needs a non-empty `## {REVIEW_COUNTERWEIGHT_HEADING}` section",
+                ))
+            continue
+
+        if n.type == "strategy" and n.rel_path.startswith(("strategy/thesis-", "strategy/theme-")):
+            if not _section_has_content(n.body, KILL_CRITERIA_HEADING):
+                issues.append(Issue(
+                    "warn", "counterweight", n.rel_path,
+                    f"updated thesis/theme needs a non-empty `## {KILL_CRITERIA_HEADING}` section",
+                ))
+            continue
+
+        if n.type == "holding" and n.stem != "index":
+            if not _section_has_content(n.body, KILL_CRITERIA_HEADING):
+                issues.append(Issue(
+                    "warn", "counterweight", n.rel_path,
+                    f"updated holding needs a non-empty `## {KILL_CRITERIA_HEADING}` section",
+                ))
+
+    return issues
+
+
 def check_event_calendar(notes: list[Note], today: date) -> list[Issue]:
     """Flag past events in docs/calendar.md that haven't been evaluated."""
     issues: list[Issue] = []
@@ -967,8 +1044,8 @@ def print_report(issues: list[Issue], file_count: int, today: date) -> int:
         buckets.setdefault(i.category, []).append(i)
 
     order = ["schema", "parser", "wikilink", "backlink", "staleness", "log", "orphan",
-             "hypotheses", "decisions", "consistency", "gaps", "backlog", "calendar",
-             "sources", "figures"]
+             "hypotheses", "decisions", "consistency", "counterweight", "gaps",
+             "backlog", "calendar", "sources", "figures"]
     labels = {
         "schema": "SCHEMA",
         "parser": "PARSER CONTRACTS",
@@ -980,6 +1057,7 @@ def print_report(issues: list[Issue], file_count: int, today: date) -> int:
         "hypotheses": "HYPOTHESES OVERDUE",
         "decisions": "STALE DECISIONS",
         "consistency": "CROSS-THESIS CONSISTENCY",
+        "counterweight": "COUNTERWEIGHTS",
         "gaps": "UNRESOLVED GAPS / UNVERIFIED",
         "backlog": "RESEARCH BACKLOG",
         "calendar": "EVENT CALENDAR",
@@ -1035,6 +1113,7 @@ def main() -> int:
     all_issues += check_hypothesis_due(notes, today)
     all_issues += check_decision_outcomes(notes, today)
     all_issues += check_cross_thesis_conviction(notes)
+    all_issues += check_counterweights(notes)
     all_issues += check_callout_gaps(notes)
     all_issues += check_source_callouts(notes)
     all_issues += check_untyped_figures(notes)

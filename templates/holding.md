@@ -23,6 +23,15 @@ time_horizon: ""  # short | medium | long
 ## Risks
 <!-- What could go wrong? -->
 
+## Kill Criteria
+<!-- Explicit conditions that would force a downgrade, DCA pause, trim, or exit decision. -->
+
+- **Thesis break**:
+- **Position-specific failure**:
+- **Valuation / sizing break**:
+- **Better expression appears**:
+- **What would make this holding closed**:
+
 ## Key Metrics
 
 | Metric | Value |

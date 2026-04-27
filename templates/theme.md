@@ -71,6 +71,16 @@ These are operating rules, not automatic orders. Any material action still gets 
 | Position exceeds sizing limit | |
 | Better expression of same theme appears | |
 
+## Kill Criteria
+
+Explicit conditions that would force a downgrade, DCA pause, trim, or exit decision.
+
+- **Primary theme break**:
+- **Evidence deadline missed**:
+- **Valuation / sizing break**:
+- **Better expression appears**:
+- **What would make this theme closed**:
+
 ## Bull / Base / Bear Cases
 
 | Case | What Happens | Portfolio Action |

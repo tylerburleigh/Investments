@@ -1,6 +1,6 @@
 ---
 name: review
-description: Run a structured periodic review (weekly, monthly, or quarterly). Orchestrates the full review workflow — pull data, validate structure, work through checklist, write the review note. Use when the user says "run a weekly review", "time for the monthly review", "let's do the quarterly", or when briefing.py flags an overdue review.
+description: Run a structured periodic review (weekly, monthly, or quarterly). Orchestrates the full review workflow — pull data, validate structure, work through checklist, include bear-case/disconfirming evidence, and write the review note. Use when the user says "run a weekly review", "time for the monthly review", "let's do the quarterly", or when briefing.py flags an overdue review.
 ---
 
 # /review
@@ -44,6 +44,7 @@ Run these before writing anything:
 - [ ] Report portfolio value and change since last snapshot
 - [ ] Flag any positions that moved >10% in the past week
 - [ ] Read the latest scan artifact (`scans/YYYY-MM-DD.md`). Note any hypothesis triggers or directional signals.
+- [ ] Read the scan's `## Disconfirming Evidence` section and decide whether any item needs a kill-criteria review, decision, or action item.
 - [ ] Scan `decisions/log.md` for any new decisions or actions since last review
 - [ ] Ask: any action needed?
 
@@ -55,6 +56,7 @@ All weekly checks, plus:
 - [ ] **Staleness tour:** work through lint staleness warnings. Update any holding or thesis docs that are stale.
 - [ ] **Backlog review:** read `docs/research-backlog.md`. Resolve 1–3 items using `/research` or push dates with a note.
 - [ ] **Scan sweep:** read all scans from the prior month. For each thesis with accumulated directional signals, synthesize into a dated `## Updates` entry in the thesis doc.
+- [ ] **Bear-case sweep:** read disconfirming evidence from the prior month's scans. Promote accumulated adverse evidence into thesis/theme `## Updates` and revise conviction or kill criteria when warranted.
 - [ ] **Hypothesis check:** read each thesis doc's `## Hypotheses` table. Evaluate any whose timeframes have passed. Update Status, Evaluated date, and append reasoning to `## Updates`.
 - [ ] **Decision audit:** surface all `status: active` decisions older than 30 days. Ask the user whether each should be closed or revisited.
 - [ ] **Research questions:** check `- [ ]` items in each thesis doc's `## Open Research Questions`. Promote any that have become urgent to the backlog.
@@ -64,6 +66,7 @@ All weekly checks, plus:
 All monthly checks, plus:
 
 - [ ] **Full thesis re-read:** re-read every thesis and theme doc end-to-end. Ask: does this thesis still hold? Has conviction changed?
+- [ ] **Kill-criteria test:** compare each active thesis/theme against its `## Kill Criteria`. If missing, add it before grading conviction.
 - [ ] **Cross-thesis consistency:** flag positions that appear in multiple theses with different conviction levels. Reconcile.
 - [ ] **Conviction review:** for each position, ask whether conviction should change. Update the holdings file and thesis table.
 - [ ] **Strategy refresh:** re-read `Investment Strategy.md`. Are allocation targets still right? Are there new open questions?
@@ -73,7 +76,7 @@ All monthly checks, plus:
 
 ## Step 4 — Write the review note
 
-Create `reviews/YYYY-MM-DD-{period}.md` from the review template. Fill in all sections. Link to decisions, snapshots, and scans. Record action items with `- [ ]` checkboxes.
+Create `reviews/YYYY-MM-DD-{period}.md` from the review template. Fill in all sections, including `## Bear Case / Disconfirming Evidence`. Link to decisions, snapshots, and scans. Record action items with `- [ ]` checkboxes.
 
 ## Step 5 — Post-work
 

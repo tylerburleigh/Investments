@@ -90,6 +90,7 @@ Before closing, append an entry to `docs/session-log.md`:
 ### Periodic Reviews
 - Weekly/monthly/quarterly reviews in `reviews/`
 - Compare allocation to targets, track thesis changes, note winners/losers
+- Include a required `## Bear Case / Disconfirming Evidence` section. This is not optional: name what weakened, what failed to appear, and which thesis or holding would be downgraded if the pattern continues.
 - Flag drift (e.g., a thematic position that grew beyond intended sizing)
 - **Run lint at the start of each monthly review:** `python3 scripts/lint.py --write-index`
   - Errors mean broken structure — fix before continuing the review
@@ -252,6 +253,7 @@ Raw findings flow from scans through reviews into permanent thesis docs.
 - **Hypothesis triggers** (conclusive evidence): immediately update thesis doc — Status + Evaluated in Hypotheses table, dated entry in `## Updates`. The thesis doc is the permanent record.
 - **Directional signals**: stay in scan file. No promotion yet. They accumulate for monthly review.
 - Every signal includes a source tier (`filing`, `primary/company`, `trade/wire`, `data provider`, `commentary`) and a newness label (`New this week` or `Carried from prior log/review`).
+- Every scan includes `## Disconfirming Evidence`. Actively look for adverse evidence, not just confirming signals; if none is found, say which thesis areas were checked.
 - Add upcoming thesis catalysts surfaced during scanning to `docs/calendar.md`.
 - For IPO candidates, use [[docs/ipo-watchlist]] as the relevance filter: only create watchlist notes and calendar events for names tied to an active thesis/theme or plausible portfolio action.
 - **Weekly review** wikilinks the relevant scan file(s) (`[[scans/YYYY-MM-DD]]`), does not duplicate findings.
@@ -260,6 +262,7 @@ Raw findings flow from scans through reviews into permanent thesis docs.
 **Monthly (synthesis):**
 - Read all scans from prior month, including any partial scans
 - For each thesis with accumulated directional signals, synthesize into a dated `## Updates` entry in the thesis doc
+- Promote accumulated disconfirming evidence into thesis/theme `## Updates` and revise kill criteria or conviction when needed
 - Evaluate overdue hypotheses (Status change + `## Updates` entry)
 - Resolve 1-3 backlog items via `/research`
 - Update stale holdings and thesis docs flagged by lint
@@ -268,6 +271,7 @@ Raw findings flow from scans through reviews into permanent thesis docs.
 - Full thesis re-read end-to-end
 - Conviction review — update thesis tables and holdings frontmatter if conviction changes
 - Promote any remaining unprocessed scan evidence into thesis docs
+- Re-test every active thesis/theme against its `## Kill Criteria`; if kill criteria are missing, add them before grading conviction
 - Cross-thesis consistency reconciliation
 - Strategy refresh (allocation targets, open questions)
 
@@ -335,14 +339,14 @@ Three skills are available as slash commands. Use them rather than ad-hoc workfl
 - The user says "run the weekly scan", "scan for news", "check thesis triggers", or "what happened this week"
 - The research methodology weekly cadence is due (see `docs/research-methodology.md`)
 
-The skill reads all active thesis/theme docs, runs targeted Tavily searches per thesis (1-2 each, max 5 results), evaluates results against hypothesis tables and backlog items, surfaces triggers and findings, and writes a dated scan artifact to `scans/YYYY-MM-DD.md`. This is the default full-pass scan workflow; if a single material development needs to be logged between weekly runs, write a partial scan note instead of pretending a full scan was run. See `.claude/skills/weekly-scan/SKILL.md` for the full workflow.
+The skill reads all active thesis/theme docs, runs targeted Tavily searches per thesis (1-2 each, max 5 results), evaluates results against hypothesis tables and backlog items, searches for disconfirming evidence, surfaces triggers and findings, and writes a dated scan artifact to `scans/YYYY-MM-DD.md`. This is the default full-pass scan workflow; if a single material development needs to be logged between weekly runs, write a partial scan note instead of pretending a full scan was run. See `.claude/skills/weekly-scan/SKILL.md` for the full workflow.
 
 **`/review`** — structured periodic review. Invoke when:
 - The user says "run a weekly/monthly/quarterly review" or similar
 - `briefing.py` flags an overdue review at session start
 - The user asks to review the portfolio, check allocation, or work through thesis health
 
-The skill runs lint, optionally pulls SnapTrade data, walks through a period-specific checklist (deeper for monthly/quarterly than weekly), writes the review note, and logs it. See `.claude/skills/review/SKILL.md` for the full workflow.
+The skill runs lint, optionally pulls SnapTrade data, walks through a period-specific checklist (deeper for monthly/quarterly than weekly), writes the review note with explicit bear-case/disconfirming evidence, and logs it. See `.claude/skills/review/SKILL.md` for the full workflow.
 
 For weekly "review and/or scan" requests, scan first. If a weekly review already exists from the past 7 days, create another review note only when new portfolio data, a hypothesis trigger, a decision/action, or a material thesis-health change warrants it.
 
@@ -381,6 +385,8 @@ When resolved: change Status to `resolved` and note the link to where the answer
 When a hypothesis triggers: update Status + Evaluated in the table, append a dated entry to the thesis doc's `## Updates` section explaining the reasoning. The thesis doc is the permanent record — no separate log entry is needed.
 
 **Signals** — thesis-relevant news findings live in `scans/YYYY-MM-DD.md`, not in `decisions/log.md`. Each signal includes source publication, article date, and directional context. Partial scans are valid when explicitly labeled as partial and scoped to the theses actually checked. See "Information Flow" below for how signals get promoted into thesis docs during reviews.
+
+**Counterweight discipline** — the vault should not only preserve active narratives. Weekly scans require a `## Disconfirming Evidence` section. Reviews require `## Bear Case / Disconfirming Evidence`. Thesis/theme and holding notes require `## Kill Criteria` when created or meaningfully updated. Kill criteria should be decision-relevant: what would lower conviction, pause DCA, force a trim, replace the expression, or close the thesis/holding.
 
 **Thesis open research questions** — each thesis/theme doc has an `## Open Research Questions` section for strategic questions about thesis validity (not citation gaps, which go in the backlog). Use `- [ ]` checkboxes; check off when answered and note where the answer landed.
 
