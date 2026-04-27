@@ -1,6 +1,6 @@
 ---
 date: 2026-04-19
-last_updated: 2026-04-21
+last_updated: 2026-04-23
 type: reference
 status: active
 tags: [research, methodology, sources]
@@ -18,6 +18,7 @@ Reference doc covering when to research, how to research, and which sources to t
 - Scan news for thesis-relevant events (Tavily search by thesis tag)
 - Check hypothesis tables in thesis docs for triggered conditions
 - Write significant findings to `scans/YYYY-MM-DD.md`; do not append signals to `decisions/log.md`
+- Default to a full weekly scan. Use a partial scan only for a mid-week thesis-relevant development worth logging before the next weekly review.
 - Add upcoming earnings, launches, regulatory deadlines, or other thesis catalysts to `docs/calendar.md`
 - Check [[docs/ipo-watchlist]] for thesis-relevant IPO filing, pricing, first earnings, or lockup events; ignore general IPO noise
 - No deep dives required unless a hypothesis is triggered or a major position moves >10%
@@ -122,7 +123,7 @@ Reference doc covering when to research, how to research, and which sources to t
 - **Cite methodology caveats.** "24% CAGR" means nothing without knowing whether it's base/bull/bear case and what's included in the market definition.
 - **When in doubt, use `[!unverified]`.** It's better to flag uncertainty than to let a guess harden into assumed fact.
 
-### Weekly Scan Source Tiers
+### Scan Source Tiers
 
 Use these labels in `scans/YYYY-MM-DD.md`:
 
@@ -134,7 +135,8 @@ Use these labels in `scans/YYYY-MM-DD.md`:
 | data provider | Farside, CoinGecko, Sprott, EIA, FRED, etc. | Cite date and methodology caveat where relevant |
 | commentary | Analyst blogs, Motley Fool, SimplyWallSt, crypto-native media | Use only when underlying data is verifiable |
 
-Each weekly scan signal should also be labeled `New this week` or `Carried from prior log/review` to avoid double-counting old evidence during monthly synthesis.
+Each scan signal should also be labeled `New this week` or `Carried from prior log/review` to avoid double-counting old evidence during monthly synthesis.
+Partial scans should be labeled explicitly as partial, state the actual `theses_scanned` count, say they were not a full weekly pass, and include only the thesis sections actually checked.
 - **Analyst price targets.** Ignore the target; understand the model and assumptions if available.
 
 ---

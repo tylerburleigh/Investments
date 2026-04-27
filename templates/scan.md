@@ -16,6 +16,13 @@ Theses/themes scanned: {{scanned_count}}/{{active_count}} | Hypothesis triggers:
 Scan window: {{start_date}} through {{date}}
 
 <!-- Each thesis section below follows the same structure.
+     Default template = full weekly scan.
+     For a partial scan:
+       - change tags to [scan, partial]
+       - change the title to "Partial Scan — {{date}}"
+       - set theses_scanned to the actual count checked
+       - add a sentence in Summary saying it was not a full weekly pass
+       - delete unscanned thesis sections instead of leaving empty placeholders
      - Hypothesis Triggers: conclusive evidence that confirms/disconfirms an open hypothesis.
      - Directional Signals: partial evidence, thesis-relevant but not conclusive.
      - Potential Backlog Resolutions: news that might answer an open research-backlog question.

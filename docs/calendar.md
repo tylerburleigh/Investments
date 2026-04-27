@@ -87,6 +87,7 @@ IPO candidates are tracked only when they map to an active thesis/theme or could
 | 2026-12-31 | AMPX non-defense commercial contract final 2026 check | [[strategy/thesis-energy-transition\|Energy Transition]] | [[strategy/thesis-energy-transition#H4\|H4: AMPX non-defense commercial contract]] | - [ ] |
 | 2026-12-31 | ASTS commercial-service / satellite-count final 2026 check | [[strategy/thesis-space\|Space]] | [[strategy/thesis-space#H3\|H3: ASTS commercial service by end of 2026]] | - [ ] |
 | 2026-12-31 | MDA.TO major government contract final 2026 check | [[strategy/thesis-space\|Space]] | [[strategy/thesis-space#H4\|H4: MDA wins major government contract]] | - [ ] |
+| 2026-12-31 | Spaceport Nova Scotia initial operational capability / Canadian Space Launch Act progress | [[strategy/thesis-space\|Space]] | [[strategy/thesis-space#Monitoring Signals\|Policy / budget monitoring signal]] | - [ ] |
 | 2026-12-31 | Uranium threshold final 2026 check | [[strategy/theme-nuclear\|Nuclear]] | [[strategy/theme-nuclear#H2\|H2: uranium above $75/lb]] | - [ ] |
 | 2026-12-31 | New hyperscaler nuclear PPA final 2026 check | [[strategy/theme-nuclear\|Nuclear]] | [[strategy/theme-nuclear#H3\|H3: additional tech hyperscaler nuclear deal]] | - [ ] |
 | 2026-12-31 | NRC SMR licensing framework final 2026 check | [[strategy/theme-nuclear\|Nuclear]] | [[strategy/theme-nuclear#H4\|H4: NRC SMR licensing framework progress]] | - [ ] |

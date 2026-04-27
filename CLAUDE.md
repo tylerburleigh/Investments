@@ -163,7 +163,7 @@ Type-specific fields:
 - **Watchlist** (`type: watchlist`): `ticker`, `sector`, `theme`, `entry_price`, `target_price`.
 - **Strategy** (`type: strategy`): `last_updated` required. Theme files add `parent_thesis: "[[strategy/thesis-xxx]]"` when they sit under a thesis.
 - **Reference** (`type: reference`): research write-ups, analysis artifacts, external reference material. Lives in `docs/`.
-- **Scans** (`type: scan`): weekly thesis news scan artifacts. `theses_scanned` (count), `signals_found` (count). Lives in `scans/`.
+- **Scans** (`type: scan`): thesis news scan artifacts. Default is a full weekly scan, but a partial scan is allowed mid-cycle for a thesis-relevant development worth logging before the next weekly review. `theses_scanned` (count) should always reflect the actual number of theses/themes checked, and `signals_found` is the count of findings logged. Lives in `scans/`.
 
 ### Decision filenames
 
@@ -247,17 +247,18 @@ Skip the decision file (log-only) when:
 Raw findings flow from scans through reviews into permanent thesis docs.
 
 **Weekly (capture + light touch):**
-- `/weekly-scan` is the default weekly capture. It writes `scans/YYYY-MM-DD.md` with findings per thesis (hypothesis triggers, directional signals, potential backlog resolutions)
+- `/weekly-scan` is the default full weekly capture. It writes `scans/YYYY-MM-DD.md` with findings per thesis (hypothesis triggers, directional signals, potential backlog resolutions)
+- Partial scans are allowed between weekly reviews when a material thesis-relevant development lands mid-week. A partial scan must say it is not a full weekly pass, set `theses_scanned` to the actual count checked, and include only the thesis sections actually scanned.
 - **Hypothesis triggers** (conclusive evidence): immediately update thesis doc — Status + Evaluated in Hypotheses table, dated entry in `## Updates`. The thesis doc is the permanent record.
 - **Directional signals**: stay in scan file. No promotion yet. They accumulate for monthly review.
 - Every signal includes a source tier (`filing`, `primary/company`, `trade/wire`, `data provider`, `commentary`) and a newness label (`New this week` or `Carried from prior log/review`).
 - Add upcoming thesis catalysts surfaced during scanning to `docs/calendar.md`.
 - For IPO candidates, use [[docs/ipo-watchlist]] as the relevance filter: only create watchlist notes and calendar events for names tied to an active thesis/theme or plausible portfolio action.
-- **Weekly review** wikilinks the scan file (`[[scans/YYYY-MM-DD]]`), does not duplicate findings.
+- **Weekly review** wikilinks the relevant scan file(s) (`[[scans/YYYY-MM-DD]]`), does not duplicate findings.
 - If a weekly review already exists from the past 7 days and there is no new portfolio snapshot, hypothesis trigger, decision/action, or material thesis-health change, write the scan only and summarize it. Do not create a duplicate weekly review note just to acknowledge a scan.
 
 **Monthly (synthesis):**
-- Read all scans from prior month
+- Read all scans from prior month, including any partial scans
 - For each thesis with accumulated directional signals, synthesize into a dated `## Updates` entry in the thesis doc
 - Evaluate overdue hypotheses (Status change + `## Updates` entry)
 - Resolve 1-3 backlog items via `/research`
@@ -334,7 +335,7 @@ Three skills are available as slash commands. Use them rather than ad-hoc workfl
 - The user says "run the weekly scan", "scan for news", "check thesis triggers", or "what happened this week"
 - The research methodology weekly cadence is due (see `docs/research-methodology.md`)
 
-The skill reads all active thesis/theme docs, runs targeted Tavily searches per thesis (1-2 each, max 5 results), evaluates results against hypothesis tables and backlog items, surfaces triggers and findings, and writes a dated scan artifact to `scans/YYYY-MM-DD.md`. See `.claude/skills/weekly-scan/SKILL.md` for the full workflow.
+The skill reads all active thesis/theme docs, runs targeted Tavily searches per thesis (1-2 each, max 5 results), evaluates results against hypothesis tables and backlog items, surfaces triggers and findings, and writes a dated scan artifact to `scans/YYYY-MM-DD.md`. This is the default full-pass scan workflow; if a single material development needs to be logged between weekly runs, write a partial scan note instead of pretending a full scan was run. See `.claude/skills/weekly-scan/SKILL.md` for the full workflow.
 
 **`/review`** — structured periodic review. Invoke when:
 - The user says "run a weekly/monthly/quarterly review" or similar
@@ -379,7 +380,7 @@ When resolved: change Status to `resolved` and note the link to where the answer
 
 When a hypothesis triggers: update Status + Evaluated in the table, append a dated entry to the thesis doc's `## Updates` section explaining the reasoning. The thesis doc is the permanent record — no separate log entry is needed.
 
-**Signals** — thesis-relevant news findings live in `scans/YYYY-MM-DD.md`, not in `decisions/log.md`. Each signal includes source publication, article date, and directional context. See "Information Flow" below for how signals get promoted into thesis docs during reviews.
+**Signals** — thesis-relevant news findings live in `scans/YYYY-MM-DD.md`, not in `decisions/log.md`. Each signal includes source publication, article date, and directional context. Partial scans are valid when explicitly labeled as partial and scoped to the theses actually checked. See "Information Flow" below for how signals get promoted into thesis docs during reviews.
 
 **Thesis open research questions** — each thesis/theme doc has an `## Open Research Questions` section for strategic questions about thesis validity (not citation gaps, which go in the backlog). Use `- [ ]` checkboxes; check off when answered and note where the answer landed.
 

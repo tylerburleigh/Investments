@@ -1,6 +1,6 @@
 ---
 date: 2026-04-19
-last_updated: 2026-04-21
+last_updated: 2026-04-23
 type: reference
 status: active
 tags: [log, sessions, continuity]
@@ -20,6 +20,16 @@ Append-only. One entry per session. Newest on top. The agent reads this at sessi
 ```
 
 ---
+
+### [2026-04-23] session | AI thesis capability dashboard
+- Worked on: turned the "AI model capability progression" question into a concrete dashboard inside [[strategy/thesis-ai]], adding a weighted scorecard, threshold bands, downgrade triggers, benchmark-selection rules, and a new hypothesis (`H5`) tied to robust real-work evals.
+- Deferred: did not create a separate recurring dashboard note or review artifact; the framework currently lives inside the thesis doc and can be split out later if it becomes part of the monthly review workflow.
+- Notes: the key decision was to treat capability-per-dollar on robust evals (`GDPval`, `Terminal-Bench 2.0`, `OSWorld-Verified`, `SWE-Bench Pro`) as the leading indicator, while treating contaminated or purely academic benchmarks as secondary context.
+
+### [2026-04-23] session | Anthropic AI scan follow-up
+- Worked on: verified that Anthropic's April 20, 2026 Amazon/compute announcement was stronger thesis evidence than the April 23, 2026 secondary-market valuation headline, then created [[scans/2026-04-23]] as an AI-only partial scan note and codified the partial-scan convention in the process docs.
+- Deferred: did not create a new weekly review or full 9-thesis scan; the Apr 23 secondary-market valuation headline was intentionally not logged as a standalone thesis signal.
+- Notes: strongest new evidence was Anthropic run-rate revenue above $30B plus up to 5GW of capacity and a more-than-$100B AWS commitment, treated as directional support for AI H1 rather than a hypothesis trigger.
 
 ### [2026-04-21] session | IPO watchlist process
 - Worked on: created [[docs/ipo-watchlist]] as the relevance filter and workflow for IPO candidates, added watchlist notes for [[watchlist/SPACEX]], [[watchlist/XE]], and [[watchlist/ELMT]], wired IPO checks into [[docs/calendar]], and added IPO checks to [[docs/research-methodology]] plus the weekly scan guidance in [[CLAUDE]].

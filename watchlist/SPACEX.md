@@ -1,6 +1,7 @@
 ---
 ticker: SPACEX
 date: 2026-04-21
+last_updated: 2026-04-23
 type: watchlist
 status: watching
 tags: [ipo, private, space, ai, satellite, starlink, xai]
@@ -24,7 +25,7 @@ The reported xAI combination also makes this an AI infrastructure and model-plat
 - Use of proceeds, capex needs, debt, and related-party transactions are understandable.
 - Valuation does not require Starlink, launch, and xAI all compounding perfectly at once.
 - Governance and control structure are acceptable for a long-term public holding.
-- First-week trading does not leave the stock priced for perfection without a margin of safety.
+- First-week trading does not leave the stock priced for perfection without a margin of safety or trigger a failed breakout across public space proxies.
 
 ## Key Metrics
 
@@ -33,9 +34,15 @@ The reported xAI combination also makes this an AI infrastructure and model-plat
 | Filing Status | Reported confidential IPO filing on 2026-04-01; public S-1 not yet on file |
 | Reported Target Valuation | Up to ~$1.75T in press reports; unverified until prospectus |
 | Primary Revenue Drivers | Starlink subscribers, launch cadence, NASA/DoD contracts, xAI |
-| Main Risk | Valuation, governance, related-party complexity, capex intensity |
+| Main Risk | Valuation, governance, related-party complexity, capex intensity, sentiment-climax risk |
 
 ## Notes
+
+### 2026-04-23 - Blow-off-top risk added
+
+The IPO is a possible sentiment-climax event for the public space basket, not only a potential new holding. A blow-off-top signal would be: extreme valuation, large retail allocation or first-day pop, spillover rally in [[holdings/RKLB]], [[holdings/LUNR]], [[holdings/ASTS]], and other space proxies, followed by a failed breakout in the days/weeks after trading begins.
+
+Base rule: do not chase sympathy rallies before the S-1 and first-week trading data. If SpaceX absorbs capital from the proxy basket or exposes weaker peer economics, freeze new Space DCA and reassess the public holdings against execution/backlog evidence rather than narrative.
 
 ### 2026-04-21 - Added to IPO watchlist
 

@@ -1,6 +1,6 @@
 ---
 date: 2026-04-18
-last_updated: 2026-04-21
+last_updated: 2026-04-23
 type: strategy
 status: active
 tags: [thesis, space, satellite, launch]
@@ -33,7 +33,7 @@ Space is transitioning from government monopoly to commercial industry. Declinin
 
 ## Major Risks
 
-- **SpaceX competitive overhang** — dominant in launch, satellite internet, potential IPO crowds out competitors
+- **SpaceX competitive overhang** — dominant in launch, satellite internet, and potential IPO crowds out competitors or marks a sentiment climax for public space equities
 - **Extreme capital intensity** — most companies burn hundreds of millions before profitability
 - **Technical execution** — rockets fail, satellites malfunction, constellations take years longer than planned
 - **Valuation disconnect** — many space stocks trade at 50-500x revenue; steep drawdowns on missed milestones
@@ -81,6 +81,7 @@ These are operating rules, not automatic orders. Any material action still gets 
 | ASTS reaches commercial revenue in at least one market | Maintain position and reassess revenue ramp needed to justify valuation |
 | ASTS commercial service slips beyond 2026 | Stop DCA and review whether valuation still supports holding |
 | MDA.TO wins major government contract | Permit scaling within quality-anchor cap |
+| SpaceX IPO prices/trades like a retail blow-off top and public space stocks fail to hold the move | Freeze new Space DCA, reassess RKLB/LUNR/ASTS valuations, and keep only positions supported by execution/backlog evidence |
 
 ## Bull / Base / Bear Cases
 
@@ -96,7 +97,7 @@ These are operating rules, not automatic orders. Any material action still gets 
 - **Commercial conversion** — ASTS active markets, satellite count, revenue, and carrier economics
 - **Mission execution** — LUNR lander outcomes, payload delivery, NASA/customer response after failures
 - **Backlog quality** — MDA.TO bookings, book-to-bill, margin, and government contract awards
-- **Capital markets** — dilution, debt, and cash runway across speculative space names
+- **Capital markets** — dilution, debt, cash runway, SpaceX IPO pricing, first-week trading, and whether IPO proceeds/liquidity crowd out public space proxies
 - **Policy / budget** — NASA, SDA, Canadian, and allied defense/space procurement changes
 
 ## Hypotheses
@@ -111,6 +112,7 @@ These are operating rules, not automatic orders. Any material action still gets 
 ## Open Research Questions
 
 - [ ] Is SpaceX's competitive overhang structurally limiting for RKLB, or does Neutron find a defensible niche (medium-lift, US-only payloads)?
+- [ ] Does the SpaceX IPO validate public space comps, or does it become a blow-off-top / sentiment-climax event for RKLB, LUNR, ASTS, PL, and other space proxies?
 - [ ] What happens to LUNR's thesis if IM-3 fails? Is there a recovery path or is lunar credibility permanently damaged?
 - [ ] Does ASTS's valuation (488x EV/Revenue) require a specific revenue ramp to justify, and what is that ramp?
 

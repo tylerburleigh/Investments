@@ -1,6 +1,6 @@
 ---
 date: 2026-04-18
-last_updated: 2026-04-21
+last_updated: 2026-04-23
 type: strategy
 status: active
 tags: [thesis, ai, compute, data-center, semiconductors, gpu]
@@ -13,6 +13,8 @@ tags: [thesis, ai, compute, data-center, semiconductors, gpu]
 ## Thesis
 
 AI is the biggest capex cycle since the internet buildout. Demand for compute, advanced packaging, power, and data center infrastructure vastly exceeds supply and will persist for years.
+
+This only stays true if model capability keeps compounding in economically relevant ways. A critical test of the thesis is whether frontier models continue to improve on real-work tasks, at falling effective cost, with enough reliability to support broader enterprise deployment.
 
 This thesis has three expressions:
 1. **Infrastructure** — GPU cloud compute (NBIS), chip packaging (AMKR), power semiconductors (NVTS), AI data centers (IREN, APLD). The picks-and-shovels of the AI buildout.
@@ -63,6 +65,56 @@ This thesis has three expressions:
   > I am not carrying a single aggregate gigawatt figure here because I do not have one authoritative source on file.
 - **Interest rate sensitivity** — these are capital-intensive businesses with heavy debt loads. Standard sensitivity, no specific figure.
 
+## Capability Dashboard
+
+This is the leading-indicator dashboard for the AI thesis. I am not tracking benchmark headlines for their own sake; I am tracking whether model progress is still translating into economically useful work that can justify continuing infrastructure spend.
+
+### Scorecard
+
+| Bucket | Weight | What to Track | Green | Yellow | Red |
+|--------|:------:|---------------|-------|--------|-----|
+| Capability on robust evals | 35 | `Terminal-Bench 2.0`, `GDPval` / `GDPval-AA`, `OSWorld-Verified`, `SWE-Bench Pro` | Best frontier model improves on at least 2 robust evals over 2 consecutive release cycles | Mixed or one-eval improvement only | Flat/down across releases or gains mostly on weak/self-reported evals |
+| Capability per dollar | 25 | Price, latency, and tokens needed to complete a fixed task well | Cost to reach a fixed quality bar falls >25% YoY | Cost down modestly or quality up without clear efficiency gain | Quality gains require sharply higher cost or cost/quality stalls |
+| Commercial adoption | 20 | Run-rate revenue, large enterprise customers, meaningful workflow penetration | Clear growth in enterprise usage and spend | Growth continues but monetization evidence is narrow | Usage/money decouple or deployments stall |
+| Infrastructure demand proof | 10 | Compute commitments, cloud capacity deals, packaging/power bottlenecks | New long-duration demand commitments and supply still constrained | Demand exists but bottlenecks ease or commitments shorten | Capacity expansion outpaces demand or cancellations rise |
+| Reliability and benchmark hygiene | 10 | Tool-use consistency, contamination risk, inverse-scaling/regression risk | Progress shows up on realistic evals with acceptable reliability | Some reliability issues or benchmark caveats | Thesis is being "proven" mainly by contaminated or brittle benchmarks |
+
+### Operating Thresholds
+
+| Total Score | Interpretation | Portfolio Stance |
+|-------------|----------------|------------------|
+| 80-100 | Thesis strengthening | Allow continued DCA within limits; strongest evidence can justify scaling AMKR/NBIS first |
+| 65-79 | Thesis intact but mixed | Maintain current sizing; prefer bottlenecks over narrative-heavy names |
+| Below 65 | Thesis under pressure | Pause new adds to weaker AI infrastructure names and require fresh evidence before scaling |
+
+### Automatic Downgrade Triggers
+
+- Two consecutive quarters with no improvement on the robust-eval basket
+- Capability gains show up mainly on contaminated or outdated benchmarks
+- Effective cost per useful task stops falling while infrastructure capex keeps rising
+- Reliability problems or inverse-scaling behavior materially reduce real-world usability
+
+### Benchmark Rules
+
+- Treat `GDPval`, `GDPval-AA`, `Terminal-Bench 2.0`, `OSWorld-Verified`, and `SWE-Bench Pro` as primary
+- Treat broad academic benchmarks like `Humanity's Last Exam`, `GPQA`, and `ARC-AGI-2` as secondary context, not the decision variable
+- Do not anchor the thesis on `SWE-bench Verified` alone; OpenAI said on 2026-02-23 that it is increasingly contaminated and recommended `SWE-Bench Pro` for frontier tracking
+- Do not compare tool-enabled and no-tool scores as if they are interchangeable
+- Prefer primary release notes and benchmark owners over secondary leaderboard sites
+
+### Current Read
+
+As of 2026-04-23, the dashboard is still green overall. Recent frontier releases still show forward motion: OpenAI released `GPT-5.5` on 2026-04-23 with stronger agentic coding and knowledge-work evals than `GPT-5.4`; Anthropic released `Claude Opus 4.7` on 2026-04-16 with reported gains on coding, finance, and knowledge-work workloads; Google DeepMind's current `Gemini 3` page shows meaningful gains over `Gemini 2.5 Pro` on several agentic and coding benchmarks. The yellow flags are benchmark contamination and the fact that more test-time compute does not monotonically help on every task.
+
+Primary sources for this dashboard:
+- OpenAI, [Introducing GPT-5.5](https://openai.com/index/introducing-gpt-5-5/)
+- OpenAI, [Introducing OpenAI o3 and o4-mini](https://openai.com/index/introducing-o3-and-o4-mini/)
+- OpenAI, [Measuring the performance of our models on real-world tasks](https://openai.com/index/gdpval/)
+- OpenAI, [Why SWE-bench Verified no longer measures frontier coding capabilities](https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/)
+- Anthropic, [Introducing Claude Opus 4.7](https://www.anthropic.com/news/claude-opus-4-7)
+- Anthropic Fellows Program, [Inverse Scaling in Test-Time Compute](https://alignment.anthropic.com/2025/inverse-scaling/)
+- Google DeepMind, [Gemini models](https://deepmind.google/models/gemini/)
+
 ## Active Positions
 
 | Ticker | Layer | Role | Conviction |
@@ -110,6 +162,7 @@ These are operating rules, not automatic orders. Any material action still gets 
 | NVTS fails H3 by Q4 2026 | Stop DCA and decide whether to exit or keep tracking-size exposure |
 | AMKR advanced packaging growth disconfirms | Stop treating packaging as a durable bottleneck; review AMKR sizing |
 | AI infrastructure basket exceeds 2.5% without new evidence | Pause DCA and redirect new cash to core or other underweight theses |
+| Capability dashboard stays below 65 for two consecutive quarters | Pause new adds to weaker infrastructure expressions; require stronger real-work capability evidence before scaling |
 
 ## Bull / Base / Bear Cases
 
@@ -122,6 +175,9 @@ These are operating rules, not automatic orders. Any material action still gets 
 ## Monitoring Signals
 
 - **Hyperscaler capex** — Amazon, Microsoft, Google, and Meta guidance and commentary
+- **Model capability progression** — robust-eval improvement on `GDPval` / `GDPval-AA`, `Terminal-Bench 2.0`, `OSWorld-Verified`, and `SWE-Bench Pro`
+- **Capability economics** — model pricing, latency, and tokens-per-task for real work, not just token list prices
+- **Benchmark quality** — contamination risk, eval methodology changes, and whether reported scores still measure frontier capability
 - **GPU market pricing** — spot/rental pricing, availability, and backlog commentary
 - **AI cloud credit quality** — customer concentration, financing terms, restructuring/default signals
 - **Packaging bottleneck** — AMKR advanced packaging revenue and TSMC CoWoS/SoIC capacity signals
@@ -136,14 +192,18 @@ These are operating rules, not automatic orders. Any material action still gets 
 | H2 | AMKR advanced packaging revenue (CoWoS/SoIC) grows >20% YoY in FY2026 | TSMC capacity expansion schedule; structural bottleneck thesis | 2026-04-19 | Feb 2027 (FY2026 earnings) | Packaging bottleneck thesis validates; AMKR positioned correctly | Bottleneck relieved faster than expected; review AMKR sizing | open | — |
 | H3 | NVTS reports first quarter of material AI data center revenue (>$10M) by end of 2026 | NVIDIA MGX design win announcement; power delivery thesis | 2026-04-19 | Q4 2026 earnings | Power semiconductor thesis materializing; add to position | Revenue aspirational not real; consider exit | open | — |
 | H4 | A major analyst house (Goldman, McKinsey) publishes evidence of measurable AI ROI in enterprise (not just productivity estimates) by end of 2027 | Goldman Sachs / Sequoia "where's the ROI" question; enterprise adoption narrative | 2026-04-19 | Dec 2027 | AI demand sustains beyond training buildout; long-term thesis strengthens | Capex bubble concern validated; revisit thesis and sizing | open | — |
+| H5 | By end-2026, the robust-eval basket (`GDPval` / `GDPval-AA`, `Terminal-Bench 2.0`, `OSWorld-Verified`, `SWE-Bench Pro`) shows continued improvement across at least two consecutive frontier release cycles | Current 2025-2026 release pattern still shows progress, but benchmark quality must remain credible | 2026-04-23 | Dec 2026 | AI-capability progression remains a valid leading indicator for infrastructure demand | If progress stalls or is benchmark-only, treat capex durability with more skepticism | open | — |
 
 ## Open Research Questions
 
-- [ ] Will AI capex ROI materialize before bubble concern overwhelms the thesis? What's the leading indicator to watch? → see [[docs/research-backlog|B004]]
+- [x] Will AI capex ROI materialize before bubble concern overwhelms the thesis? Leading indicator: track capability-per-dollar on robust, economically relevant evals rather than generic benchmark headlines. Dashboard added 2026-04-23. → see [[docs/research-backlog|B004]]
 - [ ] Is the advanced packaging (CoWoS) bottleneck structural through 2028, or does TSMC capacity expansion relieve it sooner?
 - [ ] Does NVTS earn its allocation? Revenue is still aspirational — at what point is the position a hold vs. an exit?
 
 ## Updates
+
+### 2026-04-23 — Added AI capability dashboard as a thesis health check
+Defined the leading indicator for this thesis more explicitly: not generic "AI benchmark progress," but improvement on robust, economically relevant evals at falling effective cost. Added a weighted scorecard, downgrade triggers, and a new hypothesis (`H5`) so model progress can be tracked as a falsifiable support for the infrastructure thesis rather than as a narrative assumption.
 
 ### 2026-04-18 — Created AI thesis
 Merged former AI/Compute and AI/Infrastructure theme files into a single thesis. NBIS and AMKR cover the compute/packaging layer. IREN and APLD cover the data center layer. NVTS covers the power delivery layer. The thesis spans the full AI infrastructure stack from chips to buildings.
