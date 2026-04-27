@@ -33,5 +33,6 @@ Thumbs.db
 
 # Logs and temporary files
 *.log
+.syncthing.*.tmp
 tmp/
 temp/
